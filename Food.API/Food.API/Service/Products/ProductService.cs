@@ -1,4 +1,7 @@
-﻿using Food.API.Models.Products;
+﻿using Food.API.DTO;
+using Food.API.Infra;
+using Food.API.Models.Products;
+using System.Text.Json;
 
 namespace Food.API.Service.Products
 {
@@ -12,9 +15,17 @@ namespace Food.API.Service.Products
         }
 
 
-        public int Create(Product product)
+        public async Task<int> Create(Product product)
         {
-            return _productRepository.Create(product);
+            var dto = MapFakeStoreDTO(product);
+
+            var fakeStoreId = await FakeStoreClient.AddNewProductToFakeStore(dto);
+
+            product.FakeStoreId = fakeStoreId;
+
+            await _productRepository.Create(product);
+
+            return product.Id;
         }
 
         public void Delete(int id)
@@ -32,11 +43,30 @@ namespace Food.API.Service.Products
             return _productRepository.GetById(id);
         }
 
-        public void Update(int id, Product product)
+        public async Task Update(int id, Product product)
         {
             var productExists = _productRepository.GetById(id) ?? throw new Exception("Product not Found");
-            
-            _productRepository.Update(product);
+
+            var fakeStoreDTO = MapFakeStoreDTO(product);
+
+            await FakeStoreClient.UpdateProductInTheFakeStore(fakeStoreDTO);
+
+            await _productRepository.Update(product);
+        }
+
+        
+
+        private FakesStoreProductDTO MapFakeStoreDTO (Product product)
+        {
+            return new FakesStoreProductDTO
+            {
+                Id = product.FakeStoreId,
+                Name = product.Name,
+                Image = product.ImageUrl,
+                Price = product.Price,
+                Description = product.Name,
+                Category = "Geral"
+            };
         }
     }
 }

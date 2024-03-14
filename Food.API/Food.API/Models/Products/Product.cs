@@ -10,6 +10,8 @@ namespace Food.API.Models.Products
         public string BarCode { get; set; }
         public decimal Price { get; set; }
         public string ImageUrl { get; set; }
-        public byte[] Image { get; set; }
+        public byte[]? Image { get; set; }
+        public int FakeStoreId { get; set; }
+
     }
 }

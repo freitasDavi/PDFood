@@ -10,10 +10,10 @@ namespace Food.API.Repository
             _context = appDbContext;
         }
 
-        public int Create(Product product)
+        public async Task<int> Create(Product product)
         {
-            _context.Products.Add(product);
-            _context.SaveChanges();
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
 
             return product.Id;
         }
@@ -49,7 +49,7 @@ namespace Food.API.Repository
             return _context.Products.Where(p => p.Id == id).FirstOrDefault();
         }
 
-        public void Update(Product product)
+        public async Task Update(Product product)
         {
             var prod = GetById(product.Id)!;
 
@@ -58,7 +58,7 @@ namespace Food.API.Repository
             prod.ImageUrl = product.ImageUrl;
             prod.Image = product.Image;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

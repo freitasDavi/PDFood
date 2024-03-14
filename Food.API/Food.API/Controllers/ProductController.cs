@@ -40,11 +40,11 @@ namespace Food.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<int> NewProduct([FromBody] Product product)
+        public async Task<ActionResult<int>> NewProduct([FromBody] Product product)
         {
             try
             {
-                _productService.Create(product);
+                await _productService.Create(product);
 
                 return NoContent();
 
@@ -55,11 +55,11 @@ namespace Food.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult<int> UpdateProduct([FromRoute] int id, [FromBody] Product product)
+        public async Task<ActionResult> UpdateProduct([FromRoute] int id, [FromBody] Product product)
         {
             try
             {
-                _productService.Update(id, product);
+                await _productService.Update(id, product);
 
                 return NoContent();
 

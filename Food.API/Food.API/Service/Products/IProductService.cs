@@ -6,8 +6,8 @@ namespace Food.API.Service.Products
     {
         List<Product> GetAll(string? barCode, string? name, int page);
         Product? GetById(int id);
-        void Update(int id, Product product);
-        int Create(Product product);
+        Task Update(int id, Product product);
+        Task<int> Create(Product product);
         void Delete(int id);
     }
 }
