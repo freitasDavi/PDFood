@@ -1,4 +1,5 @@
-﻿using Food.API.Models.Products;
+﻿using Food.API.DTO.Products;
+using Food.API.Models.Products;
 using Food.API.Service.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace Food.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> NewProduct([FromBody] Product product)
+        public async Task<ActionResult<int>> NewProduct([FromBody] AddProductDTO product)
         {
             try
             {
@@ -55,7 +56,7 @@ namespace Food.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateProduct([FromRoute] int id, [FromBody] Product product)
+        public async Task<ActionResult> UpdateProduct([FromRoute] int id, [FromBody] EditProductDTO product)
         {
             try
             {

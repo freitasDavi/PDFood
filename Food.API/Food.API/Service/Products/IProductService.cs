@@ -1,4 +1,5 @@
-﻿using Food.API.Models.Products;
+﻿using Food.API.DTO.Products;
+using Food.API.Models.Products;
 
 namespace Food.API.Service.Products
 {
@@ -6,8 +7,8 @@ namespace Food.API.Service.Products
     {
         List<Product> GetAll(string? barCode, string? name, int page);
         Product? GetById(int id);
-        Task Update(int id, Product product);
-        Task<int> Create(Product product);
+        Task Update(int id, EditProductDTO product);
+        Task<int> Create(AddProductDTO product);
         void Delete(int id);
     }
 }

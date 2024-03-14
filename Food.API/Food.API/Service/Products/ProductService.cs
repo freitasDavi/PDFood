@@ -1,4 +1,4 @@
-﻿using Food.API.DTO;
+﻿using Food.API.DTO.Products;
 using Food.API.Infra;
 using Food.API.Models.Products;
 using System.Text.Json;
@@ -7,25 +7,31 @@ namespace Food.API.Service.Products
 {
     public class ProductService : IProductService
     {
+        private readonly IProductMapper _mapper;
         private readonly IProductRepository _productRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(
+            IProductMapper mapper,
+            IProductRepository productRepository)
         {
+            _mapper = mapper;
             _productRepository = productRepository;
         }
 
 
-        public async Task<int> Create(Product product)
+        public async Task<int> Create(AddProductDTO dto)
         {
-            var dto = MapFakeStoreDTO(product);
+            var entity = _mapper.MapNew(dto);
 
-            var fakeStoreId = await FakeStoreClient.AddNewProductToFakeStore(dto);
+            var fakeStoreDTO = _mapper.MapFakeStoreDTO(entity);
 
-            product.FakeStoreId = fakeStoreId;
+            var fakeStoreId = await FakeStoreClient.AddNewProductToFakeStore(fakeStoreDTO);
 
-            await _productRepository.Create(product);
+            entity.FakeStoreId = fakeStoreId;
 
-            return product.Id;
+            await _productRepository.Create(entity);
+
+            return entity.Id;
         }
 
         public void Delete(int id)
@@ -43,30 +49,17 @@ namespace Food.API.Service.Products
             return _productRepository.GetById(id);
         }
 
-        public async Task Update(int id, Product product)
+        public async Task Update(int id, EditProductDTO product)
         {
             var productExists = _productRepository.GetById(id) ?? throw new Exception("Product not Found");
 
-            var fakeStoreDTO = MapFakeStoreDTO(product);
+            _mapper.MapEdit(product, productExists);
+
+            var fakeStoreDTO = _mapper.MapFakeStoreDTO(productExists);
 
             await FakeStoreClient.UpdateProductInTheFakeStore(fakeStoreDTO);
 
-            await _productRepository.Update(product);
-        }
-
-        
-
-        private FakesStoreProductDTO MapFakeStoreDTO (Product product)
-        {
-            return new FakesStoreProductDTO
-            {
-                Id = product.FakeStoreId,
-                Name = product.Name,
-                Image = product.ImageUrl,
-                Price = product.Price,
-                Description = product.Name,
-                Category = "Geral"
-            };
+            await _productRepository.Update(productExists);
         }
     }
 }

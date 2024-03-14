@@ -1,4 +1,4 @@
-﻿namespace Food.API.DTO
+﻿namespace Food.API.DTO.Products
 {
     public class FakesStoreProductDTO
     {

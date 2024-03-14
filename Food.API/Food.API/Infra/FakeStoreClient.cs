@@ -1,4 +1,4 @@
-﻿using Food.API.DTO;
+﻿using Food.API.DTO.Products;
 using System.Text.Json;
 
 namespace Food.API.Infra
