@@ -1,4 +1,5 @@
 using Food.API.DTO.Products;
+using Food.API.Models.Files;
 using Food.API.Models.Products;
 using Food.API.Repository;
 using Food.API.Service.Products;
@@ -53,4 +54,6 @@ static void ConfigureServices(IServiceCollection services)
     services.AddScoped<IProductMapper, ProductMapper>();
     services.AddScoped<IProductService, ProductService>();
     services.AddScoped<IProductRepository, ProductRepository>();
+
+    services.AddScoped<IFileUploadRepository, FileUploadRepository>();
 }

@@ -21,6 +21,8 @@ namespace Food.API.Service.Products
 
         public async Task<int> Create(AddProductDTO dto)
         {
+            
+
             var entity = _mapper.MapNew(dto);
 
             var fakeStoreDTO = _mapper.MapFakeStoreDTO(entity);
@@ -39,7 +41,7 @@ namespace Food.API.Service.Products
             _productRepository.Delete(id);
         }
 
-        public List<Product> GetAll(string? barCode, string? name, int page)
+        public PaginatedReturn GetAll(string? barCode, string? name, int page)
         {
             return _productRepository.GetAll(barCode, name, page);
         }

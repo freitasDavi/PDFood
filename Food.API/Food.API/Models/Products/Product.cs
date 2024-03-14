@@ -7,12 +7,10 @@ namespace Food.API.Models.Products
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string BarCode { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string BarCode { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public string ImageUrl { get; set; }
-        [JsonIgnore]
-        public byte[]? Image { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
         [JsonIgnore]
         public int FakeStoreId { get; set; }
 

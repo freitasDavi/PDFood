@@ -6,5 +6,10 @@ export type Product = {
     price: number;
     barCode: string;
     imageUrl: string;
-    image: string
+}
+
+export type PaginatedProduct = {
+    products: Product[],
+    total: number;
+    pageIndex: number;
 }

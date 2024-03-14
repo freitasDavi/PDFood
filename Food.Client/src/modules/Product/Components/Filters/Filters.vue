@@ -10,7 +10,7 @@ const productName = defineModel<string>('product')
 
 <template>
     <div class="flex gap-2">
-        <InputText type="text" v-model="barCode" />
-        <InputText type="text" v-model="productName" />
+        <InputText placeholder="Código de barras" type="text" v-model="barCode" />
+        <InputText placeholder="Nome do produto" type="text" v-model="productName" />
     </div>
 </template>

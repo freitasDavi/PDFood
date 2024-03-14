@@ -1,4 +1,5 @@
-﻿using Food.API.Models.Products;
+﻿using Food.API.DTO.Products;
+using Food.API.Models.Products;
 
 namespace Food.API.Repository
 {
@@ -26,7 +27,7 @@ namespace Food.API.Repository
             _context.SaveChanges();
         }
 
-        public List<Product> GetAll(string? barCode, string? name, int page)
+        public PaginatedReturn GetAll(string? barCode, string? name, int page)
         {
             var LIMIT = 10;
             var query = _context.Products.AsQueryable();
@@ -41,7 +42,13 @@ namespace Food.API.Repository
                 query = query.Where(p => p.Name.Contains(name));
             }
 
-            return query.Skip(page * LIMIT).Take(LIMIT).ToList();
+            var totalCount = query.Count();
+
+            return new PaginatedReturn {
+                Total = totalCount,
+                Products = query.Skip(page * LIMIT).Take(LIMIT).ToList(),
+                PageIndex = page
+            };
         }
 
         public Product? GetById(int id)
@@ -56,7 +63,6 @@ namespace Food.API.Repository
             prod.Price = product.Price;
             prod.Name = product.Name;
             prod.ImageUrl = product.ImageUrl;
-            prod.Image = product.Image;
 
             await _context.SaveChangesAsync();
         }

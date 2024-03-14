@@ -5,7 +5,7 @@ namespace Food.API.Service.Products
 {
     public interface IProductService
     {
-        List<Product> GetAll(string? barCode, string? name, int page);
+        PaginatedReturn GetAll(string? barCode, string? name, int page);
         Product? GetById(int id);
         Task Update(int id, EditProductDTO product);
         Task<int> Create(AddProductDTO product);

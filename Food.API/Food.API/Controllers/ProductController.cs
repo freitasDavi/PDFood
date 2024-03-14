@@ -18,7 +18,7 @@ namespace Food.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Product>> GetProducts(
+        public ActionResult<PaginatedReturn> GetProducts(
             [FromQuery] string? barCode,
             [FromQuery] string? name,
             [FromQuery] int? page)
@@ -41,11 +41,11 @@ namespace Food.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> NewProduct([FromBody] AddProductDTO product)
+        public async Task<ActionResult<int>> NewProduct([FromBody] AddProductDTO dto)
         {
             try
             {
-                await _productService.Create(product);
+                await _productService.Create(dto);
 
                 return NoContent();
 

@@ -9,6 +9,7 @@ namespace Food.API.DTO.Products
             entity.Price = dto.Price;
             entity.BarCode = dto.BarCode;
             entity.Name = dto.Name;
+            entity.ImageUrl = dto.ImageUrl; 
         }
 
         public Product MapNew(AddProductDTO dto)
@@ -18,7 +19,7 @@ namespace Food.API.DTO.Products
                 Price = dto.Price,
                 BarCode = dto.BarCode,
                 Name = dto.Name,
-                ImageUrl = ""
+                ImageUrl = dto.ImageUrl,
             };
         }
 

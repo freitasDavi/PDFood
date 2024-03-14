@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { defineModel, defineEmits } from 'vue';
 import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext';
+import FileUpload from 'primevue/fileupload';
+import InputNumber from 'primevue/inputnumber';
 import { Product } from '../../../../types/Product';
+import { api } from '../../../../utils/api';
 
 const visible = defineModel<boolean>('visible');
-// const product = defineModel<Product>('product')
 
 const prod = defineModel<Product>({
     required: false,
@@ -21,20 +22,23 @@ const prod = defineModel<Product>({
 
 const emit = defineEmits<{
     (e: 'submit-product-form'): void
+    (e: 'update-image', file: any): void
 }>()
 
-// const props = withDefaults(defineProps<{
-//     name: string
-//     price: number
-//     barCode: string
-//     id?: number
-// }>(), {
-//     name: "",
-//     price: 0,
-//     barCode: "",
-//     id: 0
-// })
+const uploadImage = async (data: any) => {
+    const selectedFile = data.files[0],
+        formData = new FormData();
 
+    formData.append('file', selectedFile)
+    
+    const response = await api.post('FileUpload', formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    })
+
+    prod.value.imageUrl = response.data;
+}
 
 </script>
 
@@ -52,6 +56,11 @@ const emit = defineEmits<{
             <div class="flex flex-col gap-2">
                 <label for="barCode">Código de barras</label>
                 <InputText id="barCode" v-model="prod.barCode"  />
+            </div>
+            <div class="flex flex-col gap-2 ">
+                <h5>Imagem</h5>
+                <img v-if="prod.imageUrl" :src="prod.imageUrl" class="w-[300px] h-[300px] object-cover" />
+                <FileUpload choose-label="Selecione" mode="basic" name="image" accept="image/*" :max-file-size="1000000" :custom-upload="true" @uploader="uploadImage" :auto="true" />
             </div>
         </div>
         <div class="flex w-full gap-2 justify-end my-4">
