@@ -8,6 +8,10 @@ const props = defineProps<{
     data: Product[]
 }>()
 
+const emit = defineEmits<{
+  (e: 'edit-product', prod: Product): void
+}>();
+
 </script>
 
 
@@ -19,7 +23,7 @@ const props = defineProps<{
         <Column field="price" header="Preço" style="width: 25%" :sortable="true"></Column>
         <Column field="id">
           <template #body="slotProps">
-            <Button label="Edit" icon="pi pi-pencil" />
+            <Button label="Edit" icon="pi pi-pencil" @click="() => emit('edit-product', slotProps.data)" />
           </template>
         </Column>
       </DataTable>

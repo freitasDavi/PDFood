@@ -22,7 +22,9 @@ namespace Food.API.Controllers
             [FromQuery] string? name,
             [FromQuery] int? page)
         {
-            return Ok(_productService.GetAll(barCode, name, page ?? 0));
+            var products = _productService.GetAll(barCode, name, page ?? 0);
+
+            return Ok(products);
         }
 
         [HttpGet("{id:int}")]

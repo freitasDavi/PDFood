@@ -4,8 +4,20 @@ using Food.API.Service.Products;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var allowedOrigins = "allowedOrigins";
 
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowedOrigins,
+        policy =>
+        {
+            policy.WithHeaders("Content-Type", "Authorization", "only-if-cached");
+            policy.AllowAnyMethod();
+            policy.WithOrigins("http://localhost:5173", "http://localhost:5174");
+        });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -27,7 +39,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(allowedOrigins);
 app.UseAuthorization();
 
 app.MapControllers();

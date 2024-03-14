@@ -28,7 +28,7 @@ namespace Food.API.Repository
 
         public List<Product> GetAll(string? barCode, string? name, int page)
         {
-            var LIMIT = 1;
+            var LIMIT = 10;
             var query = _context.Products.AsQueryable();
 
             if (barCode != null)
